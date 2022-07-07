@@ -1,8 +1,10 @@
 package br.com.jamesson.smart.oven.api.controller;
 
 import br.com.jamesson.smart.oven.api.dto.Recipe;
+import br.com.jamesson.smart.oven.api.dto.RecipeV2;
 import br.com.jamesson.smart.oven.api.service.RecipesService;
 import com.fasterxml.jackson.core.JsonParseException;
+import io.micronaut.core.version.annotation.Version;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
@@ -25,8 +27,15 @@ public class RecipesController {
     }
 
     @Get
+    @Version("1")
     public List<Recipe> getRecipes(@QueryValue Optional<String> query){
         return service.getRecipes(query);
+    }
+
+    @Get
+    @Version("2")
+    public List<RecipeV2> getRecipesV2(@QueryValue Optional<String> query){
+        return service.getRecipesV2(query);
     }
 
     @Post
