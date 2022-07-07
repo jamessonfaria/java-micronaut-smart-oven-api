@@ -18,9 +18,14 @@ public class CalibrationsController {
     }
 
     @Get("/calibrate")
-    public Mono<CalibrationUpdateResult> getCalibrate(){
+    public Mono<CalibrationUpdateResult> calibrateOven(){
         Mono<CalibrationUpdateResult> result = calibrationService.calibrateOven();
         return result;
+    }
+
+    @Get("/calibrate/declarative")
+    public Mono<CalibrationUpdateResult> calibrateOvenUsingDeclarativeClient() {
+        return calibrationService.calibrateOvenUsingDeclarativeClient();
     }
 
 }
