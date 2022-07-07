@@ -1,6 +1,7 @@
 package br.com.jamesson.smart.oven.api.service;
 
 import br.com.jamesson.smart.oven.api.dto.Recipe;
+import br.com.jamesson.smart.oven.api.exception.InvalidTemperatureException;
 import jakarta.inject.Singleton;
 
 import java.util.ArrayList;
@@ -25,6 +26,9 @@ public class RecipesService {
     }
 
     public Recipe createRecipe(Recipe recipe){
+        if(recipe.getCookingTemperature() > 550)
+            throw new InvalidTemperatureException("Invalid Temperature: " + recipe.getCookingTemperature());
+
         recipes.add(recipe);
         return recipe;
     }

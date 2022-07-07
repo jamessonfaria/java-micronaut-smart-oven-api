@@ -2,7 +2,13 @@ package br.com.jamesson.smart.oven.api.controller;
 
 import br.com.jamesson.smart.oven.api.dto.Recipe;
 import br.com.jamesson.smart.oven.api.service.RecipesService;
+import com.fasterxml.jackson.core.JsonParseException;
+import io.micronaut.http.HttpRequest;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
 import io.micronaut.http.annotation.*;
+import io.micronaut.http.annotation.Error;
+import io.micronaut.http.hateoas.JsonError;
 import jakarta.inject.Inject;
 
 import java.util.List;
@@ -36,6 +42,18 @@ public class RecipesController {
     @Delete("/{recipeName}")
     public Recipe deleteRecipe(String recipeName){
         return service.deleteRecipe(recipeName);
+    }
+
+    @Error // - tratamento de erros local, apenas para esse controller
+    public HttpResponse<JsonError> jsonError(HttpRequest request, JsonParseException e){
+        JsonError error = new JsonError("Invalid JSON: " + e.getMessage());
+        return HttpResponse.badRequest(error);
+    }
+
+    @Error(global = true, status = HttpStatus.NOT_FOUND) // - tratamento de erros global, para qualquer controler que tiver NOT FOUND
+    public HttpResponse<JsonError> notFound(HttpRequest request){
+        JsonError error = new JsonError("Something went wrong trying to find the resource");
+        return HttpResponse.notFound().body(error);
     }
 
 }
