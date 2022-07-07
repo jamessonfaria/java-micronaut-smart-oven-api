@@ -36,6 +36,7 @@ public class CalibrationService {
     }
 
     public Mono<CalibrationUpdateResult> calibrateOvenUsingDeclarativeClient() {
+        logger.info("Calibrating oven using declarative client ...");
         return declarativeClient.getCalibrationParameters(OVEN_MODEL)
                 .doOnNext(parameters -> logger.info("Calibrations parameters received {}", parameters))
                 .doOnNext(parameters -> logger.info("Calibrations oven ..."))
